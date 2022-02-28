@@ -80,7 +80,7 @@ let quotes = [
 
 let colorNames = [
     'midnight',
-    'royal',
+    'royal blue',
     'lapis',
     'indigo',
     'violet',
@@ -194,8 +194,6 @@ function setup() {
 }
 
 function draw() {
-    console.log(started);
-
     // add stars
     if (frameCount % 60 == 0 && frameCount < 1200) {
         for (let i = 0; i < random(5 - n); i++) {
@@ -237,7 +235,7 @@ function draw() {
     fill(255);
     rectMode(CORNER);
     rect(0, picY + picH/2, width, height);
-    rect(0, 0, width, 100);
+    rect(0, 0, width, picY - picH/2);
     rectMode(CENTER);
 
     // picture frame
@@ -326,7 +324,7 @@ function keyPressed() {
             for (let i = 0; i < keys.length; i++) {
                 if (keys[i].letter == String.fromCharCode(keyCode)) {
                     keys[i].animateKey();
-                    console.log('pressed ', keys[i].letter)
+                    // console.log('pressed ', keys[i].letter)
                 }
             }
         } else if (keyCode === 32) {    // space
@@ -405,7 +403,7 @@ function handleCorrectKey(letter) {
 
         // most recent image
         onscreen.push(imgs[n]);
-        console.log('pushed ', n);
+        // console.log('pushed ', n);
 
         // removing the pressed key
         currKeys.splice(currKeys.indexOf(letter), 1);
@@ -418,7 +416,7 @@ function handleCorrectKey(letter) {
             lettersMixed.splice(index, 1);
         }
         
-        console.log(currKeys);
+        // console.log(currKeys);
 
         miloPic = miloGood;
 
@@ -426,7 +424,7 @@ function handleCorrectKey(letter) {
         if (n < maxN - 1) {
             n++;
         }
-        console.log(n);
+        console.log('n: ', n);
     }
 }
 
@@ -461,14 +459,15 @@ class Key {
         push();
         if (currKeys.includes(this.letter) && n < maxN - 1) {
             if (n !== 15) {
-                fill(bgFill.r, bgFill.g, bgFill.b, 150);
+                fill(bgFill.r * 1.2, bgFill.g * 1.2, bgFill.b * 1.2, 150);
             } else {
-                fill(255, 186, 59, 150);
-            } 
+                fill(255, 250, 214, 150);
+            }
         } else {
             noFill();
         }
-        stroke(0);
+        //stroke(0);
+        stroke(bgFill.r - n * 4, bgFill.g - n * 4, bgFill.b - n * 4);
         rect(this.x, this.y, this.size, this.size, this.size/5);
         this.restoreKey();
 
@@ -481,12 +480,16 @@ class Key {
                 text(this.letter, this.x, this.y);
                 // color
                 textSize(this.size/5);
-                text(this.colorName, this.x, this.y + this.size/3);
+                text(this.colorName, this.x, this.y + this.size * 0.3);
             }
         } else {
+            textSize(this.size/3);
+            stroke(0);
+            fill(255);
+            rect(this.x, this.y, this.size, this.size, this.size/5);
+            fill(0);
             text(this.letter, this.x, this.y);
         }
-        
         pop();
     }
 
@@ -499,7 +502,7 @@ class Key {
                 } else {
                     this.pressed = !this.pressed;
                     console.log('pressed ' + this.letter);
-                    this.size -= 2;
+                    this.size -= this.size/15;
                     if (currKeys.includes(this.letter)) {
                         handleCorrectKey(this.letter);
                     } else {
@@ -510,14 +513,14 @@ class Key {
     }
 
     animateKey() {
-        if (this.size > keySize - 2) {
-            this.size -= 2;
+        if (this.size > keySize - this.size/15) {
+            this.size -= this.size/15;
         }
     }
 
     restoreKey() {
         if (this.size < keySize) {
-            this.size += 0.2;
+            this.size += this.size/150;
         }
     }
 
