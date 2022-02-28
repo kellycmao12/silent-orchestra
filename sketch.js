@@ -146,7 +146,6 @@ function setup() {
 
     // initial background
     fill(bgFill.r, bgFill.g, bgFill.b, 255);
-    // rect(width/2, height/2, width, height);
     rect(picX, picY, picW, picH);
 
     // milo
@@ -154,7 +153,7 @@ function setup() {
 
     // position image
     picX = width * 0.3;
-    picY = height * 0.35;
+    picY = height * 0.3;
     if (width > 800 && height > 500) {
         picW = 400;
         picH = 250;
@@ -186,8 +185,8 @@ function setup() {
     }
 
     // phantom tollbooth link
-    let a = createA('https://www.goodreads.com/book/show/378.The_Phantom_Tollbooth', 'the phantom tollbooth \u2197', '_blank');
-    a.position(width * 4/5 - textWidth('the phantom tollbooth \u2197')/2, 35);
+    let a = createA('https://www.goodreads.com/book/show/378.The_Phantom_Tollbooth', 'based on the phantom tollbooth \u2197', '_blank');
+    a.position(width * 4/5 - textWidth('based on the phantom tollbooth \u2197')/2, 35);
     a.style('font-family', 'montserrat');
     a.style('color', 'rgb(30, 37, 69');
     a.style('font-size', '14px');
@@ -208,9 +207,19 @@ function draw() {
         }
     }
 
+    // warp the colors if user pressed wrong key
+    if (wrong){
+        if (n < 10) {
+            blendMode(SCREEN);
+        } else {
+            blendMode(DARKEST);
+        }
+    } else {
+        blendMode(BLEND);
+    }
+    
     // background color fades in
     fill(bgFill.r, bgFill.g, bgFill.b, 5);
-    // rect(width/2, height/2, width, height);
     rect(picX, picY, picW, picH);
 
     // sun
@@ -230,12 +239,15 @@ function draw() {
     for (let i = 0; i < onscreen.length; i++) {
         image(onscreen[i], picX, picY, picW, picH);
     }
+    blendMode(BLEND);
 
     // white background behind keys/header
     fill(255);
     rectMode(CORNER);
     rect(0, picY + picH/2, width, height);
     rect(0, 0, width, picY - picH/2);
+    rect(0, 0, picX - picW/2, height);
+    rect(picX + picW/2, 0, picX - picW/2, height);
     rectMode(CENTER);
 
     // picture frame
@@ -245,13 +257,15 @@ function draw() {
     for (let i = 0; i < keys.length; i++) {
         keys[i].display();
     }
-    // space bar photo note
-    spaceX = picX;
-    spaceY = height * 2/3 + keySize * 3.6;
-    textAlign(CENTER, CENTER);
-    fill(90);
-    text('< press space to save image >', spaceX, spaceY)
-
+    // instructions notes
+    if (started) {
+        spaceX = picX;
+        spaceY = height * 0.6 + keySize * 3.6;
+        textAlign(CENTER, CENTER);
+        fill(50);
+        text('follow the highlighted keys to help milo conduct the sunrise! but beware, pressing the wrong keys will disrupt the very essence of color and time\n~ press space to take a picture ~', spaceX, spaceY, picW * 1.2);    
+    }
+    
     image(skyGradient, width * 4/5, height/2, width * 2/5, height);
 
     // draw orchestra and milo
@@ -271,7 +285,9 @@ function draw() {
     if (!started) {
         text(quotes[0], width * 4/5, height/6 + 50 - textWidth(quotes[0]) / 100, width/4);
     } else {
+        textStyle(ITALIC);
         text(quotes[n + 1], width * 4/5, height/6 + 50 - textWidth(quotes[n + 1]) / 100, width/4);
+        textStyle(NORMAL);
     }
     
 
@@ -293,10 +309,10 @@ function draw() {
     fill(bgFill.r, bgFill.g, bgFill.b);
     text('the silent orchestra', picX, 40);
 
-    textFont('Georgia');
-    textSize(14);
-    fill(100);
-    text('follow the keys to help milo conduct the sunrise!', picX, 75);
+    // textFont('Georgia');
+    // textSize(14);
+    // fill(100);
+    // text('follow the keys to help milo conduct the sunrise!', picX, 75);
     
     pop();
 }
@@ -328,7 +344,7 @@ function keyPressed() {
                 }
             }
         } else if (keyCode === 32) {    // space
-            saveCanvas('sunrise', 'png');
+            saveCanvas('sunrise', 'jpg');
         }
     }
     // disable space scroll
@@ -445,13 +461,13 @@ class Key {
 
         if (this.index < 10) {
             this.x = picX - (keySize * 1.2) * (5 - this.index) + this.size/2;
-            this.y = height * 2/3;
+            this.y = height * 0.6;
         } else if (this.index < 19) {
             this.x = picX - (keySize * 1.2) * (4.5 - (this.index - 10)) + this.size/2;
-            this.y = height * 2/3 + keySize * 1.2;
+            this.y = height * 0.6 + keySize * 1.2;
         } else if (this.index < 26) {
             this.x = picX - (keySize * 1.2) * (3.5 - (this.index - 19)) + this.size/2;
-            this.y = height * 2/3 + keySize * 2.4;
+            this.y = height * 0.6 + keySize * 2.4;
         }   // 10, 45, 70
     }
 
@@ -474,7 +490,7 @@ class Key {
         noStroke();
         fill(0);
         textAlign(CENTER, CENTER);
-        if (n < maxN - 1) { 
+        if (n < maxN - 1 && started) {
             if (currKeys.includes(this.letter)) {
                 textSize(this.size/3);
                 text(this.letter, this.x, this.y);
@@ -483,7 +499,7 @@ class Key {
                 text(this.colorName, this.x, this.y + this.size * 0.3);
             }
         } else {
-            textSize(this.size/3);
+            textSize(this.size/4);
             stroke(0);
             fill(255);
             rect(this.x, this.y, this.size, this.size, this.size/5);
