@@ -233,9 +233,6 @@ function draw() {
         image(onscreen[i], picX, picY, picW, picH);
     }
 
-    // picture frame
-    image(goldFrame, picX, picY, picW, picH);
-
     // white background behind keys/header
     fill(255);
     rectMode(CORNER);
@@ -243,13 +240,16 @@ function draw() {
     rect(0, 0, width, 100);
     rectMode(CENTER);
 
+    // picture frame
+    image(goldFrame, picX, picY, picW, picH);
+
     // draw keyboard
     for (let i = 0; i < keys.length; i++) {
         keys[i].display();
     }
     // space bar photo note
     spaceX = picX;
-    spaceY = height * 2/3 + 30 + keySize * 3.6;
+    spaceY = height * 2/3 + keySize * 3.6;
     textAlign(CENTER, CENTER);
     fill(90);
     text('< press space to save image >', spaceX, spaceY)
@@ -260,9 +260,9 @@ function draw() {
     push();
     translate(width * 3/4, height * 0.6);
     rotate(0.12);
-    image(orchestra, 0, 0, picW / 2, picH / 2);
+    image(orchestra, 0, 0, width/5, width/5 * 0.70);
     pop();
-    image(miloPic, width * 7/8, height * 0.75, 50, 100);
+    image(miloPic, width * 0.9, height * 0.75, width/12, width/6);
 
     // draw quote
     noStroke();
@@ -447,13 +447,13 @@ class Key {
 
         if (this.index < 10) {
             this.x = picX - (keySize * 1.2) * (5 - this.index) + this.size/2;
-            this.y = height * 2/3 + 30;
+            this.y = height * 2/3;
         } else if (this.index < 19) {
             this.x = picX - (keySize * 1.2) * (4.5 - (this.index - 10)) + this.size/2;
-            this.y = height * 2/3 + 30 + keySize * 1.2;
+            this.y = height * 2/3 + keySize * 1.2;
         } else if (this.index < 26) {
             this.x = picX - (keySize * 1.2) * (3.5 - (this.index - 19)) + this.size/2;
-            this.y = height * 2/3 + 30 + keySize * 2.4;
+            this.y = height * 2/3 + keySize * 2.4;
         }   // 10, 45, 70
     }
 
