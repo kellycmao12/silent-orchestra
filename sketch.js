@@ -262,7 +262,7 @@ function draw() {
         spaceX = picX;
         spaceY = height * 0.6 + keySize * 3.6;
         textAlign(CENTER, CENTER);
-        fill(50);
+        fill(0);
         text('follow the highlighted keys to help milo conduct the sunrise! but beware, pressing the wrong keys will disrupt the very essence of color and time\n~ press space to take a picture ~', spaceX, spaceY, picW * 1.2);    
     }
     
