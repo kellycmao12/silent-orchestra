@@ -446,9 +446,12 @@ function handleCorrectKey(letter) {
 
 // fill with a random color for wrong key press
 function handleWrongKey() {
-    bgFill = {r: random(255), g: random(255), b: random(255), a: 1};
-    miloPic = miloBad;
-    wrong = true;
+    if (n < maxN - 1) {
+        bgFill = {r: random(255), g: random(255), b: random(255), a: 1};
+        miloPic = miloBad;
+        wrong = true;
+    }
+    
 }
 
 class Key {
