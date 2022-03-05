@@ -186,10 +186,10 @@ function setup() {
 
     // phantom tollbooth link
     let a = createA('https://www.goodreads.com/book/show/378.The_Phantom_Tollbooth', 'based on the phantom tollbooth \u2197', '_blank');
-    a.position(width * 4/5 - textWidth('based on the phantom tollbooth \u2197')/2, 35);
+    a.position(width * 0.76 - textWidth('based on the phantom tollbooth \u2197')/2, 35);
     a.style('font-family', 'montserrat');
     a.style('color', 'rgb(30, 37, 69');
-    a.style('font-size', '14px');
+    a.style('font-size', width/80 + 'px');
 }
 
 function draw() {
@@ -263,7 +263,8 @@ function draw() {
         spaceY = height * 0.6 + keySize * 3.6;
         textAlign(CENTER, CENTER);
         fill(0);
-        text('follow the highlighted keys to help milo conduct the sunrise! but beware, pressing the wrong keys will disrupt the very essence of color and time\n~ press space to take a picture ~', spaceX, spaceY, picW * 1.2);    
+        let rulesW = width * 0.5;
+        text('follow the highlighted keys to help milo conduct the sunrise! but beware,\npressing the wrong keys will disrupt the very essence of color and time\n~ press space to take a picture ~', spaceX, spaceY, rulesW);    
     }
     
     image(skyGradient, width * 4/5, height/2, width * 2/5, height);
@@ -281,7 +282,7 @@ function draw() {
     fill(0);
     textFont('Georgia');
     textAlign(RIGHT, CENTER);
-    textSize(14);
+    textSize(width/80);
     if (!started) {
         text(quotes[0], width * 4/5, height/6 + 50 - textWidth(quotes[0]) / 100, width/4);
     } else {
@@ -305,14 +306,9 @@ function draw() {
     textAlign(CENTER, CENTER);
 
     textFont(montserrat);
-    textSize(24);
+    textSize(width/40);
     fill(bgFill.r, bgFill.g, bgFill.b);
     text('the silent orchestra', picX, 40);
-
-    // textFont('Georgia');
-    // textSize(14);
-    // fill(100);
-    // text('follow the keys to help milo conduct the sunrise!', picX, 75);
     
     pop();
 }
